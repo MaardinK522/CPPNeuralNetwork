@@ -27,8 +27,8 @@ void testingMatrixLibs() {
 
 void drawDemoSFML() {
     std::cout << "Starting SFML program" << std::endl;
-    float mouseX = 0;
-    float mouseY = 0;
+    float mouseX;
+    float mouseY;
     sf::RenderWindow window(sf::VideoMode(500, 500), "My Demo frame");
     sf::RectangleShape rect(sf::Vector2f(10, 10));
     while (window.isOpen()) {
