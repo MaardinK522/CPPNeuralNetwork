@@ -33,10 +33,11 @@ public:
 
     Matrix copy() const;
 
-
     int getRowCount() const;
 
     int getColumnCount() const;
+
+    Matrix();
 };
 
 Matrix matrixMultiplication(Matrix matrix1, Matrix matrix2);

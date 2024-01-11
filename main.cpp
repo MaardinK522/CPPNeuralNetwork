@@ -1,8 +1,9 @@
 #include <iostream>
 #include "SFML/Graphics.hpp"
 #include "matrix/Matrix.h"
+#include "network/NeuralNetwork.h"
 
-int main() {
+void testingMatrixLibs() {
     Matrix matrix(5, 5);
     Matrix matrix1(8, 5);
 
@@ -16,7 +17,6 @@ int main() {
     std::cout << "Result matrix" << std::endl;
     matrix + matrix1;
     matrix.printMatrix();
-    return 0;
 }
 
 void drawDemoSFML() {
@@ -38,4 +38,18 @@ void drawDemoSFML() {
         window.draw(rect);
         window.display();
     }
+}
+
+void testingNeuralNetwork() {
+    int layerCount = 5;
+    auto *layers = new Layer[5];
+    for (int a = 0; a < layerCount; ++a) {
+        layers[a] = Layer(a + 1, "sigmoid");
+    }
+    NeuralNetwork(10, layerCount, layers);
+}
+
+int main() {
+    testingNeuralNetwork();
+    return 0;
 }

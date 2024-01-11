@@ -89,11 +89,9 @@ void Matrix::randomize() const {
     std::normal_distribution<double> distribution(0.0, 0.1);
 
     // Storing random number to each index.
-    for (int a = 0; a < rows; ++a) {
-        this->data[a] = new double[this->cols];
+    for (int a = 0; a < rows; ++a)
         for (int b = 0; b < cols; ++b)
             this->data[a][b] = 0.5 * distribution(gen);
-    }
 }
 
 Matrix matrixMultiplication(Matrix matrix1, Matrix matrix2) {
@@ -128,6 +126,12 @@ int Matrix::getColumnCount() const {
 
 int Matrix::getRowCount() const {
     return this->rows;
+}
+
+Matrix::Matrix() {
+    this->rows = 0;
+    this->cols = 0;
+    this->data = nullptr;
 }
 
 
