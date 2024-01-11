@@ -7,6 +7,12 @@
 #include "iostream"
 #include "random"
 
+Matrix::Matrix() {
+    this->rows = 0;
+    this->cols = 0;
+    this->data = nullptr;
+}
+
 Matrix::Matrix(int rows, int cols) {
     this->rows = rows;
     this->cols = cols;
@@ -82,6 +88,15 @@ Matrix Matrix::operator*(Matrix matrix) const {
     return result;
 }
 
+Matrix Matrix::operator+=(Matrix matrix) {
+    if (matrix.rows != this->rows || this->cols != matrix.cols)
+        throw std::runtime_error("Mismatch matrix Size. Unable to perform addition.");
+    for (int a = 0; a < this->rows; ++a)
+        for (int b = 0; b < this->cols; ++b)
+            this->setData(a, b, this->data[a][b] + matrix.data[a][b]);
+    return *this;
+}
+
 void Matrix::randomize() const {
     // Initializing random generator.
     std::random_device randomDevice;
@@ -112,6 +127,14 @@ Matrix matrixMultiplication(Matrix matrix1, Matrix matrix2) {
     return result;
 }
 
+Matrix transpose(Matrix matrix) {
+    Matrix result(matrix.getColumnCount(), matrix.getRowCount());
+    for (int a = 0; a < result.getRowCount(); ++a)
+        for (int b = 0; b < result.getColumnCount(); ++b)
+            result.setData(a, b, matrix.getData(b, a));
+    return result;
+}
+
 void Matrix::setData(int row, int col, double value) const {
     this->data[row][col] = value;
 }
@@ -128,10 +151,17 @@ int Matrix::getRowCount() const {
     return this->rows;
 }
 
-Matrix::Matrix() {
-    this->rows = 0;
-    this->cols = 0;
-    this->data = nullptr;
+
+double *Matrix::getColumn(int columnIndex) const {
+    auto *column = new double[this->cols];
+    for (int a = 0; a < this->cols; ++a) {
+        column[a] = this->getData(a, columnIndex);
+    }
+    return column;
 }
 
-
+void Matrix::mapMatrix(const MapAble &equation) const {
+    for (int a = 0; a < this->getRowCount(); ++a)
+        for (int b = 0; b < this->getColumnCount(); ++b)
+            this->setData(a, b, equation(this->getData(b, a)));
+}

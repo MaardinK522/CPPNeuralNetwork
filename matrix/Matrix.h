@@ -5,6 +5,9 @@
 #ifndef UNTITLED_MATRIX_H
 #define UNTITLED_MATRIX_H
 
+
+#include "../network/MapAble.h"
+
 class Matrix {
 private:
     int rows, cols;
@@ -23,6 +26,8 @@ public:
 
     Matrix operator*(Matrix matrix) const;
 
+    Matrix operator+=(Matrix matrix);
+
     void randomize() const;
 
     void setData(int row, int col, double value) const;
@@ -38,8 +43,14 @@ public:
     int getColumnCount() const;
 
     Matrix();
+
+    double *getColumn(int columnIndex) const;
+
+    void mapMatrix(const MapAble &equation) const;
 };
 
 Matrix matrixMultiplication(Matrix matrix1, Matrix matrix2);
+
+Matrix transpose(Matrix matrix);
 
 #endif //UNTITLED_MATRIX_H

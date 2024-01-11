@@ -4,10 +4,13 @@
 #include <iostream>
 #include "NeuralNetwork.h"
 #include "ctime"
+#include "functional"
+#include <cmath>
+
 
 NeuralNetwork::NeuralNetwork(int inputCount, int layerCount, Layer *layers) {
     this->inputsCount = inputCount;
-    this->layerCount = layerCount;
+    this->layersCount = layerCount;
     this->networkLayers = layers;
     this->outputsCount = layers[layerCount - 1].nodeCount;
     this->weightsMatrices = new Matrix[layerCount];
@@ -43,11 +46,36 @@ void NeuralNetwork::train(double **trainingInputs, double **trainingOutputs, int
                           int trainingOutputLength, int trainingSize, int epochs) const {
     // Getting random number generator
     std::srand(static_cast<unsigned int>(std::time(nullptr)));
-    int randomIndex = std::rand() % trainingSize;
-    NeuralNetwork::backPropagate(trainingInputs[randomIndex], trainingOutputs[randomIndex]);
-}git config --global --add safe.directory C:/Users/kambl/CLionProjects/untitled
+    for (int i = 0; i < epochs; ++i) {
+        int randomIndex = std::rand() % trainingSize;
+        NeuralNetwork::backPropagate(
+                trainingInputs[randomIndex],
+                trainingInputLength,
+                trainingOutputs[randomIndex],
+                trainingOutputLength
+        );
+    }
+}
 
 
-void NeuralNetwork::backPropagate(double *trainingInput, double *trainingOutput) const {
+void NeuralNetwork::backPropagate(double *trainingInput, int trainingInputSize, double *trainingOutput,
+                                  int trainingOutputSize) const {
+}
 
+double *NeuralNetwork::processInputs(const double *inputs, int inputsLength) const {
+    if (inputsLength != this->inputsCount)
+        throw std::runtime_error("Mismatch length of inputs to the network.");
+    Matrix inputMatrix = transpose(Matrix(1, inputsCount, new double *{const_cast<double *>(inputs)}));
+    auto *outputMatrices = new Matrix[this->layersCount];
+    for (int layerIndex = 0; layerIndex < this->layersCount; ++layerIndex) {
+        if (layerIndex == 0)
+            outputMatrices[layerIndex]
+                    = matrixMultiplication(this->weightsMatrices[layerIndex], inputMatrix);
+        else
+            outputMatrices[layerIndex]
+                    = matrixMultiplication(this->weightsMatrices[layerIndex],
+                                           outputMatrices[layerIndex - 1]);
+        outputMatrices[layerIndex] += this->biasMatrices[layerIndex];
+    }
+    return transpose(outputMatrices[this->layersCount - 1]).getColumn(0);
 }

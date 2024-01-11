@@ -2,12 +2,14 @@
 #include "SFML/Graphics.hpp"
 #include "matrix/Matrix.h"
 #include "network/NeuralNetwork.h"
+#include "network/ActivationFunctionSchema.h"
 
 void testingMatrixLibs() {
     Matrix matrix(5, 5);
-    Matrix matrix1(8, 5);
+    Matrix matrix1(5, 5);
 
     std::cout << "Matrix 1" << std::endl;
+    matrix.randomize();
     matrix.printMatrix();
 
     std::cout << "Matrix 2" << std::endl;
@@ -15,8 +17,12 @@ void testingMatrixLibs() {
     matrix1.printMatrix();
 
     std::cout << "Result matrix" << std::endl;
-    matrix + matrix1;
-    matrix.printMatrix();
+    Matrix result = matrix + matrix1;
+    result.printMatrix();
+
+    result.mapMatrix(TAN_H.getEquation());
+    std::cout << "After mapping sigmoid: " << std::endl;
+    result.printMatrix();
 }
 
 void drawDemoSFML() {
@@ -50,6 +56,8 @@ void testingNeuralNetwork() {
 }
 
 int main() {
-    testingNeuralNetwork();
+//    drawDemoSFML();
+    testingMatrixLibs();
+//    testingNeuralNetwork();
     return 0;
 }
