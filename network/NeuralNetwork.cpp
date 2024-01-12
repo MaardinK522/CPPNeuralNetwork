@@ -34,11 +34,11 @@ NeuralNetwork::NeuralNetwork(int inputCount, int layerCount, Layer *layers) {
         this->weightsMatrices[layerIndex].randomize();
         this->biasMatrices[layerIndex].randomize();
 
-        std::cout << "Layer index: " << layerIndex << std::endl;
-        std::cout << "Weights matrix: " << std::endl;
-        this->weightsMatrices[layerIndex].printMatrix();
-        std::cout << "Bias matrix: " << std::endl;
-        this->biasMatrices[layerIndex].printMatrix();
+//        std::cout << "Layer index: " << layerIndex << std::endl;
+//        std::cout << "Weights matrix: " << std::endl;
+//        this->weightsMatrices[layerIndex].printMatrix();
+//        std::cout << "Bias matrix: " << std::endl;
+//        this->biasMatrices[layerIndex].printMatrix();
     }
 }
 
@@ -76,6 +76,8 @@ double *NeuralNetwork::processInputs(const double *inputs, int inputsLength) con
                     = matrixMultiplication(this->weightsMatrices[layerIndex],
                                            outputMatrices[layerIndex - 1]);
         outputMatrices[layerIndex] += this->biasMatrices[layerIndex];
+        outputMatrices[layerIndex].mapMatrix(this->networkLayers[layerIndex].activationFunction.getEquation());
     }
+    std::cout << "Processing inputs: " << std::endl;
     return transpose(outputMatrices[this->layersCount - 1]).getColumn(0);
 }

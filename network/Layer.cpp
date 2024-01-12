@@ -6,7 +6,5 @@
 
 #include <utility>
 
-Layer::Layer(int nodeCount, std::string activationFunction) {
-    this->nodeCount = nodeCount;
-    this->activationFunction = std::move(activationFunction);
-}
+Layer::Layer(int nodeCount, ActivationFunctionSchema activationFunction)
+        : nodeCount(nodeCount), activationFunction(std::move(activationFunction)) {}

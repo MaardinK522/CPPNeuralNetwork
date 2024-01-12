@@ -153,8 +153,8 @@ int Matrix::getRowCount() const {
 
 
 double *Matrix::getColumn(int columnIndex) const {
-    auto *column = new double[this->cols];
-    for (int a = 0; a < this->cols; ++a) {
+    auto *column = new double[this->rows];
+    for (int a = 0; a < this->rows; ++a) {
         column[a] = this->getData(a, columnIndex);
     }
     return column;
@@ -163,5 +163,5 @@ double *Matrix::getColumn(int columnIndex) const {
 void Matrix::mapMatrix(const MapAble &equation) const {
     for (int a = 0; a < this->getRowCount(); ++a)
         for (int b = 0; b < this->getColumnCount(); ++b)
-            this->setData(a, b, equation(this->getData(b, a)));
+            this->setData(a, b, equation(this->getData(a, b)));
 }

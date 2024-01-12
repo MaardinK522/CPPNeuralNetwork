@@ -20,7 +20,7 @@ void testingMatrixLibs() {
     Matrix result = matrix + matrix1;
     result.printMatrix();
 
-    result.mapMatrix(TAN_H.getEquation());
+    result.mapMatrix(SIGMOID.getEquation());
     std::cout << "After mapping sigmoid: " << std::endl;
     result.printMatrix();
 }
@@ -49,15 +49,23 @@ void drawDemoSFML() {
 void testingNeuralNetwork() {
     int layerCount = 5;
     auto *layers = new Layer[5];
-    for (int a = 0; a < layerCount; ++a) {
-        layers[a] = Layer(a + 1, "sigmoid");
+    int a;
+    for (a = 0; a < layerCount; ++a) {
+        layers[a] = Layer(a + 1, SIGMOID);
     }
-    NeuralNetwork(10, layerCount, layers);
+    NeuralNetwork network(2, layerCount, layers);
+
+    auto *inputs = new double[2];
+    double *outputs = network.processInputs(inputs, 2);
+
+    for (int b = 0; b < a + 1; ++b) {
+        std::cout << outputs[b] << std::endl;
+    }
 }
 
 int main() {
 //    drawDemoSFML();
-    testingMatrixLibs();
-//    testingNeuralNetwork();
+//    testingMatrixLibs();
+    testingNeuralNetwork();
     return 0;
 }

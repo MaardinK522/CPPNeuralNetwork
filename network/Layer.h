@@ -5,20 +5,46 @@
 #ifndef UNTITLED_LAYER_H
 #define UNTITLED_LAYER_H
 
-#include "string"
+#include "ActivationFunctionSchema.h"
 
-class Layer { ;
+
+static ActivationFunctionSchema SIGMOID(
+        Activations::SIGMOID,
+        [](double x) {
+            return 1 / (1 + exp(-x));
+        },
+        [](double y) {
+            return y * (1 - y);
+        }
+);
+static ActivationFunctionSchema RE_LU(
+        Activations::RE_LU,
+        [](double x) {
+            return std::max(0.0, x);
+        },
+        [](double y) {
+            return y < 0 ? 0.0 : 1.0;
+        }
+);
+static ActivationFunctionSchema TAN_H(
+        Activations::TAN_H,
+        [](double x) {
+            return (exp(x) - exp(-x)) / (exp(x) + exp(-x));
+        },
+        [](double y) {
+            return 1 - (y * y);
+        }
+);
+
+class Layer {
 
 public:
     int nodeCount;
-    std::string activationFunction;
+    ActivationFunctionSchema activationFunction;
 
-    Layer(int nodeCount, std::string activationFunction);
+    Layer(int nodeCount, ActivationFunctionSchema activationFunction);
 
-    Layer() {
-        this->nodeCount = 0;
-        this->activationFunction = "sigmoid";
-    }
+    Layer() : activationFunction(SIGMOID), nodeCount(0) {}
 };
 
 
